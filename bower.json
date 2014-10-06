@@ -1,0 +1,21 @@
+{
+  "name": "wired-js",
+  "version": "0.0.0",
+  "authors": [
+    "justinvdm <justinvdm.0.1.0@gmail.com>"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "sig-js": "^0.1.0",
+    "sig-any": "^0.1.0",
+    "sig-all": "^0.1.0",
+    "drainpipe": "^0.1.0",
+    "gibberish-dsp": "git@github.com:charlieroberts/Gibberish.git"
+  }
+}
