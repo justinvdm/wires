@@ -1,5 +1,5 @@
 describe("wired.stop", function() {
-  it("should disconnect the ugen from given bus", function() {
+  it("should disconnect the ugen from given bus", function(done) {
     dp([w.sine(), w.bus(), w.bus()])
       (sig.all)
       (sig.then, sig.spread(function(ugen, bus, bus2) {
@@ -18,6 +18,8 @@ describe("wired.stop", function() {
         w.stop(ugen, bus2)
         bus.inputs.should.have.length(0)
         bus2.inputs.should.have.length(0)
+
+        done();
       }))
   })
 })
