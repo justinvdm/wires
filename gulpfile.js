@@ -6,7 +6,15 @@ var concat = require('gulp-concat')
 
 var src = [
   'src/index.js',
-  'src/utils.js'
+  'src/utils.js',
+  'src/attach.js',
+  'src/ugens/index.js',
+  'src/ugens/meta.js',
+  'src/ugens/make.js',
+  'src/ugens/define.js',
+  'src/out.js',
+  'src/stop.js',
+  'src/init.js'
 ]
 
 
@@ -59,9 +67,11 @@ gulp.task('test', function() {
       'bower_components/sig.all/sig.all.js',
       'bower_components/drainpipe/drainpipe.js',
       'bower_components/gibberish-dsp/build/gibberish.js',
+      'tests/init.js'
     ]
     .concat(src)
     .concat([
+      'tests/test-init.js',
       'tests/**/*.test.js'
     ]))
     .pipe(karma({
