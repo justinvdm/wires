@@ -1,6 +1,6 @@
 describe("wired:ugens", function() {
   it("should support unnamed parameter passing", function(done) {
-    dp(w.sine(440, 2))
+    vv(w.sine(440, 2))
       (sig.then, function(ugen) {
         ugen.amp.should.equal(2)
         ugen.frequency.should.equal(440)
@@ -9,23 +9,23 @@ describe("wired:ugens", function() {
   })
 
   it("should support named parameter pasing", function(done) {
-    dp(w.sine({
+    vv(w.sine({
         frequency: 440,
         amp: 2
       }))
       (sig.then, function(ugen) {
         ugen.amp.should.equal(2)
-        ugen.frequency.should.equal(440)
-        done()
+          ugen.frequency.should.equal(440)
+          done()
       })
   })
 
   it("should support both named and unnamed parameter passing", function(done) {
-    dp(w.sine(440, {amp: 2}))
+    vv(w.sine(440, {amp: 2}))
       (sig.then, function(ugen) {
         ugen.amp.should.equal(2)
-        ugen.frequency.should.equal(440)
-        done()
+          ugen.frequency.should.equal(440)
+          done()
       })
   })
 
@@ -34,7 +34,7 @@ describe("wired:ugens", function() {
     var amp = sig()
     var ugen
 
-    dp(w.sine(freq, amp))
+    vv(w.sine(freq, amp))
       (sig.then, function(newUgen) {
         ugen = newUgen
       })

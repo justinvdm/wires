@@ -40,10 +40,10 @@ gulp.task('build', function () {
         cjsName: 'sig.any',
         globalName: 'sig.any'
       }, {
-        name: 'dp',
+        name: 'v',
         amdName: 'drainpipe',
         cjsName: 'drainpipe',
-        globalName: 'drainpipe'
+        globalName: 'v'
       }, {
         name: 'Gibberish',
         amdName: 'gibberish-dsp',
@@ -66,8 +66,7 @@ gulp.task('test', function() {
       'bower_components/sig.any/sig.any.js',
       'bower_components/sig.all/sig.all.js',
       'bower_components/drainpipe/drainpipe.js',
-      'bower_components/gibberish-dsp/build/gibberish.js',
-      'tests/init.js'
+      'bower_components/gibberish-dsp/build/gibberish.js'
     ]
     .concat(src)
     .concat([

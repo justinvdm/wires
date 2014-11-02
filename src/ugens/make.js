@@ -6,21 +6,21 @@ wired.ugens.make = function() {
     var out = sig()
     var params = makeParams(ugen, args)
 
-    dp(params)
+    vv(params)
       (sig.all)
       (sig.then, function(params0) {
         var gibUgen = new wired.gib[ugen.name](params0)
 
-        dp(params)
-          (sig.any)
-          (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
-          (sig.depend, out)
+        vv(params)
+        (sig.any)
+        (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
+        (sig.depend, out)
 
         sig.push(out, gibUgen)
       })
       (sig.depend, out)
 
-    return out
+      return out
   }
 
 
