@@ -1,13 +1,13 @@
 
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
-    define(["sig-js","sig.all","sig.any","drainpipe","gibberish-dsp"], factory);
+    define(["sig-js","drainpipe","gibberish-dsp"], factory);
   } else if (typeof exports === 'object') {
-    module.exports = factory(require('sig-js'), require('sig.all'), require('sig.any'), require('drainpipe'), require('gibberish-dsp'));
+    module.exports = factory(require('sig-js'), require('drainpipe'), require('gibberish-dsp'));
   } else {
-    root.wired = factory(root.sig, root.sig.all, root.sig.any, root.drainpipe, root.Gibberish);
+    root.wired = factory(root.sig, root.v, root.Gibberish);
   }
-}(this, function(sig, sigAll, sigAny, dp, Gibberish) {
+}(this, function(sig, v, Gibberish) {
 
 var wired = {}
 
@@ -74,19 +74,19 @@ wired.ugens.make = function() {
     var out = sig()
     var params = makeParams(ugen, args)
 
-    dp(params)
-      (sig.all)
-      (sig.then, function(params0) {
-        var gibUgen = new wired.gib[ugen.name](params0)
+    v(params)
+     (sig.all)
+     (sig.then, function(params0) {
+       var gibUgen = new wired.gib[ugen.name](params0)
 
-        dp(params)
-          (sig.any)
-          (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
-          (sig.depend, out)
+       v(params)
+        (sig.any)
+        (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
+        (sig.depend, out)
 
-        sig.push(out, gibUgen)
-      })
-      (sig.depend, out)
+       sig.push(out, gibUgen)
+     })
+     (sig.depend, out)
 
     return out
   }
@@ -129,7 +129,7 @@ wired.ugens.define = function() {
 
 wired.out = function() {
   function out(ugen, bus) {
-    return dp([ugen, bus || wired.master])
+    return v([ugen, bus || wired.master])
       (sig.all)
       (sig.then, sig.spread(function(ugen, bus) {
         ugen.connect(bus)
@@ -144,7 +144,7 @@ wired.out = function() {
 
 wired.stop = function() {
   function stop(ugen, bus) {
-    return dp([ugen, bus])
+    return v([ugen, bus])
       (sig.all)
       (sig.then, sig.spread(function(ugen, bus) {
         if (!bus) ugen.disconnect()
