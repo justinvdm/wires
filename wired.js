@@ -74,21 +74,21 @@ wired.ugens.make = function() {
     var out = sig()
     var params = makeParams(ugen, args)
 
-    v(params)
-     (sig.all)
-     (sig.then, function(params0) {
-       var gibUgen = new wired.gib[ugen.name](params0)
+    vv(params)
+      (sig.all)
+      (sig.then, function(params0) {
+        var gibUgen = new wired.gib[ugen.name](params0)
 
-       v(params)
-        (sig.any)
-        (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
-        (sig.depend, out)
+        vv(params)
+          (sig.any)
+          (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
+          (sig.depend, out)
 
-       sig.push(out, gibUgen)
-     })
-     (sig.depend, out)
+        sig.push(out, gibUgen)
+      })
+      (sig.depend, out)
 
-    return out
+      return out
   }
 
 
@@ -129,7 +129,7 @@ wired.ugens.define = function() {
 
 wired.out = function() {
   function out(ugen, bus) {
-    return v([ugen, bus || wired.master])
+    return vv([ugen, bus || wired.master])
       (sig.all)
       (sig.then, sig.spread(function(ugen, bus) {
         ugen.connect(bus)
@@ -144,7 +144,7 @@ wired.out = function() {
 
 wired.stop = function() {
   function stop(ugen, bus) {
-    return v([ugen, bus])
+    return vv([ugen, bus])
       (sig.all)
       (sig.then, sig.spread(function(ugen, bus) {
         if (!bus) ugen.disconnect()
