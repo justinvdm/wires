@@ -12,9 +12,9 @@ wired.ugens.make = function() {
         var gibUgen = new wired.gib[ugen.name](params0)
 
         vv(params)
-        (sig.any)
-        (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
-        (sig.depend, out)
+          (sig.any)
+          (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
+          (sig.depend, out)
 
         sig.push(out, gibUgen)
       })
