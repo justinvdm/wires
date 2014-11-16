@@ -1,7 +1,4 @@
 wired.ugens.make = function() {
-  var u = wired.utils
-
-
   function make(ugen, args) {
     var out = sig()
     var params = makeParams(ugen, args)
@@ -27,10 +24,17 @@ wired.ugens.make = function() {
   function makeParams(ugen, args) {
     var params = args[args.length - 1]
 
-    if (u.is(params, 'object')) args = args.slice(0, -1)
+    if (isObject(params)) args = args.slice(0, -1)
     else params = {}
 
     return setProps(params, ugen.paramNames, args)
+  }
+
+
+  function isObject(v) {
+    return !sig.isSig(v)
+        && v !== null
+        && typeof v == 'object'
   }
 
 
