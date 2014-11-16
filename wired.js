@@ -11,12 +11,25 @@
 
 var wired = {}
 
+wired.utils = function() {
+  function rm(arr, x) {
+    var i = arr.indexOf(x)
+    if (i > -1) arr.splice(i, 1)
+    return arr
+  }
+
+
+  return {
+    rm: rm
+  }
+}()
+
 wired.init = function() {
   function init(conf) {
     wired.gib = conf.gib
     wired.gib.init()
     wired.master = wired.gib[conf.master]
-
+    wired.maxLives = conf.maxLives
     defineUgens(conf)
   }
   
@@ -147,6 +160,7 @@ wired.out = function() {
       (sig.all)
       (sig.then, sig.spread(function(ugen, bus) {
         ugen.connect(bus)
+        wired.lives.store.push(ugen)
         return ugen
       }))
       ()
@@ -157,12 +171,16 @@ wired.out = function() {
 }()
 
 wired.stop = function() {
+  var rm = wired.utils.rm
+
+
   function stop(ugen, bus) {
     return vv([ugen, bus])
       (sig.all)
       (sig.then, sig.spread(function(ugen, bus) {
         if (!bus) ugen.disconnect()
         else ugen.disconnect(bus)
+        rm(wired.lives.store)
         return ugen
       }))
       ()
@@ -177,6 +195,7 @@ wired.stop = function() {
     gib: Gibberish,
     master: 'out',
     meta: wired.ugens.meta
+    maxConns: 512
   })
 })()
 

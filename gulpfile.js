@@ -6,6 +6,7 @@ var concat = require('gulp-concat')
 
 var src = [
   'src/index.js',
+  'src/utils.js',
   'src/init.js',
   'src/ugens/index.js',
   'src/ugens/meta.js',
