@@ -57,7 +57,7 @@ gulp.task('test', function() {
     ]
     .concat(src)
     .concat([
-      'tests/test-init.js',
+      'tests/init.js',
       'tests/**/*.test.js'
     ]))
     .pipe(karma({

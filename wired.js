@@ -58,21 +58,6 @@ wired.ugens.meta = [{
     'amp',
     'pan'
   ]
-}, {
-  exportName: 'sampler',
-  name: 'Sampler',
-  paramNames: [
-    'pitch',
-    'amp',
-    'isRecording',
-    'isPlaying',
-    'input',
-    'length',
-    'start',
-    'end',
-    'loops',
-    'pan'
-  ]
 }]
 
 wired.ugens.make = function() {
