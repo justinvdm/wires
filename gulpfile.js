@@ -6,14 +6,14 @@ var concat = require('gulp-concat')
 
 var src = [
   'src/index.js',
-  'src/attach.js',
+  'src/init.js',
   'src/ugens/index.js',
   'src/ugens/meta.js',
   'src/ugens/make.js',
   'src/ugens/define.js',
   'src/out.js',
   'src/stop.js',
-  'src/init.js'
+  'src/tail.js'
 ]
 
 

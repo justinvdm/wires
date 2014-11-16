@@ -11,15 +11,27 @@
 
 var wired = {}
 
-wired.attach = function(conf) {
-  var define = wired.ugens.define
-  wired.gib = conf.gib
-  wired.master = wired.gib[conf.master]
+wired.init = function() {
+  function init(conf) {
+    wired.gib = conf.gib
+    wired.gib.init()
+    wired.master = wired.gib[conf.master]
 
-  conf.meta.forEach(function(ugen) {
-    wired[ugen.exportName] = define(ugen)
-  })
-}
+    defineUgens(conf)
+  }
+  
+
+  function defineUgens(conf) {
+    var define = wired.ugens.define
+
+    conf.meta.forEach(function(ugen) {
+      wired[ugen.exportName] = define(ugen)
+    })
+  }
+
+
+  return init
+}()
 
 wired.ugens = {}
 
@@ -46,6 +58,21 @@ wired.ugens.meta = [{
     'amp',
     'pan'
   ]
+}, {
+  exportName: 'sampler',
+  name: 'Sampler',
+  paramNames: [
+    'pitch',
+    'amp',
+    'isRecording',
+    'isPlaying',
+    'input',
+    'length',
+    'start',
+    'end',
+    'loops',
+    'pan'
+  ]
 }]
 
 wired.ugens.make = function() {
@@ -56,7 +83,7 @@ wired.ugens.make = function() {
     vv(params)
       (sig.all)
       (sig.then, function(params0) {
-        var gibUgen = new wired.gib[ugen.name](params0)
+        var gibUgen = makeGibUgen(ugen.name, params0)
 
         vv(params)
           (sig.any)
@@ -78,6 +105,22 @@ wired.ugens.make = function() {
     else params = {}
 
     return setProps(params, ugen.paramNames, args)
+  }
+
+
+  function makeGibUgen(name, params) {
+    var type = wired.gib[name]
+
+    return !isEmpty(params)
+      ? new type(params)
+      : new type()
+  }
+
+
+  function isEmpty(obj) {
+    var k
+    for (k in obj) return false
+    return true
   }
 
 
@@ -145,9 +188,7 @@ wired.stop = function() {
 }()
 
 ;(function() {
-  Gibberish.init()
-
-  wired.attach({
+  wired.init({
     gib: Gibberish,
     master: 'out',
     meta: wired.ugens.meta
