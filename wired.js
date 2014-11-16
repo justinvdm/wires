@@ -11,24 +11,6 @@
 
 var wired = {}
 
-wired.utils = function() {
-  function is(x, type) {
-    if (typeof type == 'function') return x instanceof type
-    if (type === 'array') return Array.isArray(x, type)
-    if (type === 'null') return x === null
-    if (x === null && type === 'object') return false
-
-    return (x || 0).type
-      ? x.type === type
-      : typeof x == type
-  }
-
-
-  return {
-    is: is
-  }
-}()
-
 wired.attach = function(conf) {
   var define = wired.ugens.define
   wired.gib = conf.gib
@@ -67,11 +49,8 @@ wired.ugens.meta = [{
 }]
 
 wired.ugens.make = function() {
-  var u = wired.utils
-
-
   function make(ugen, args) {
-    var out = sig()
+    var out = sig.sticky()
     var params = makeParams(ugen, args)
 
     vv(params)
@@ -84,21 +63,28 @@ wired.ugens.make = function() {
           (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
           (sig.depend, out)
 
-        sig.push(out, gibUgen)
+        sig.put(out, gibUgen)
       })
       (sig.depend, out)
 
-      return out
+    return out
   }
 
 
   function makeParams(ugen, args) {
     var params = args[args.length - 1]
 
-    if (u.is(params, 'object')) args = args.slice(0, -1)
+    if (isObject(params)) args = args.slice(0, -1)
     else params = {}
 
     return setProps(params, ugen.paramNames, args)
+  }
+
+
+  function isObject(v) {
+    return !sig.isSig(v)
+        && v !== null
+        && typeof v == 'object'
   }
 
 
