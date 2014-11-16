@@ -41,25 +41,25 @@ describe("wired:ugens", function() {
 
     expect(ugen).to.be.undefined
 
-    sig.push(freq, 440)
+    sig.put(freq, 440)
     expect(ugen).to.be.undefined
 
-    sig.push(amp, 2)
+    sig.put(amp, 2)
     ugen.amp.should.equal(2)
     ugen.frequency.should.equal(440)
 
-    sig.push(freq, 220)
+    sig.put(freq, 220)
     ugen.frequency.should.equal(220)
 
-    sig.push(amp, 3)
+    sig.put(amp, 3)
     ugen.amp.should.equal(3)
 
     sig.reset(freq)
-    sig.push(freq, 110)
+    sig.put(freq, 110)
     ugen.frequency.should.equal(220)
 
     sig.reset(amp)
-    sig.push(amp, 4)
+    sig.put(amp, 4)
     ugen.amp.should.equal(3)
   })
 })

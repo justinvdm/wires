@@ -13,7 +13,7 @@ wired.ugens.make = function() {
           (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
           (sig.depend, out)
 
-        sig.push(out, gibUgen)
+        sig.put(out, gibUgen)
       })
       (sig.depend, out)
 
