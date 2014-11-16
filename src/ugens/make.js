@@ -1,6 +1,6 @@
 wired.ugens.make = function() {
   function make(ugen, args) {
-    var out = sig()
+    var out = sig.sticky()
     var params = makeParams(ugen, args)
 
     vv(params)
@@ -17,7 +17,7 @@ wired.ugens.make = function() {
       })
       (sig.depend, out)
 
-      return out
+    return out
   }
 
 

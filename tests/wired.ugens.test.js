@@ -1,4 +1,14 @@
 describe("wired:ugens", function() {
+  function capture(s) {
+    var values = []
+
+    sig.map(s, function(x) {
+      values.push(x)
+    })
+
+    return values
+  }
+
   it("should support unnamed parameter passing", function(done) {
     vv(w.sine(440, 2))
       (sig.then, function(ugen) {
@@ -61,5 +71,15 @@ describe("wired:ugens", function() {
     sig.reset(amp)
     sig.put(amp, 4)
     ugen.amp.should.equal(3)
+  })
+
+  it("should be sticky", function(done) {
+    var ugen = w.sine(220)
+
+    sig.then(ugen, function(gibUgen) {
+      capture(ugen).should.deep.equal([gibUgen])
+      capture(ugen).should.deep.equal([gibUgen])
+      done()
+    })
   })
 })
