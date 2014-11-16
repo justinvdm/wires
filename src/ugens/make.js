@@ -6,7 +6,7 @@ wired.ugens.make = function() {
     vv(params)
       (sig.all)
       (sig.then, function(params0) {
-        var gibUgen = new wired.gib[ugen.name](params0)
+        var gibUgen = makeGibUgen(ugen.name, params0)
 
         vv(params)
           (sig.any)
@@ -28,6 +28,22 @@ wired.ugens.make = function() {
     else params = {}
 
     return setProps(params, ugen.paramNames, args)
+  }
+
+
+  function makeGibUgen(name, params) {
+    var type = wired.gib[name]
+
+    return !isEmpty(params)
+      ? new type(params)
+      : new type()
+  }
+
+
+  function isEmpty(obj) {
+    var k
+    for (k in obj) return false
+    return true
   }
 
 
