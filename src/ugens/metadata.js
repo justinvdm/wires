@@ -21,4 +21,28 @@ wires.ugens.metadata = [{
     'amp',
     'pan'
   ]
+}, {
+  name: 'Sampler',
+  exportName: 'sampler',
+  paramNames: [
+    'file',
+    'pitch',
+    'amp',
+    'isRecording',
+    'isPlaying',
+    'input',
+    'length',
+    'start',
+    'end',
+    'loops',
+    'pan'
+  ],
+  defaults: {
+    pitch: 1
+  },
+  hooks: {
+    connect: function(ugen) {
+      ugen.note()
+    }
+  }
 }]

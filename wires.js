@@ -74,7 +74,60 @@ wires.ugens.metadata = [{
     'amp',
     'pan'
   ]
+}, {
+  name: 'Sampler',
+  exportName: 'sampler',
+  paramNames: [
+    'file',
+    'pitch',
+    'amp',
+    'isRecording',
+    'isPlaying',
+    'input',
+    'length',
+    'start',
+    'end',
+    'loops',
+    'pan'
+  ],
+  defaults: {
+    pitch: 1
+  },
+  hooks: {
+    connect: function(ugen) {
+      ugen.note()
+    }
+  }
 }]
+
+wires.ugens.meta = function() {
+  function meta(gib, v) {
+    return arguments.length > 1
+      ? set(gib, v)
+      : get(gib)
+  }
+
+
+  function get(gib) {
+    var d = gib._wires_meta
+    if (d) return d
+
+    d = {}
+    set(gib, d)
+    return d
+  }
+
+
+  function set(gib, v) {
+    gib._wires_meta = v
+    return gib
+  }
+
+
+  meta.set = set
+  meta.get = get
+  return meta
+}()
 
 wires.ugens.make = function() {
   var any = sig.any,
@@ -87,15 +140,19 @@ wires.ugens.make = function() {
       sticky = sig.sticky,
       spread = sig.spread
 
+  var meta = wires.ugens.meta
 
-  function make(ugen, args) {
+
+  function make(metadata, args) {
     var out = sticky()
-    var params = makeParams(ugen, args)
+    var params = makeParams(metadata, args)
+    if (metadata.defaults) defaults(params, metadata.defaults)
 
     vv(params)
       (all)
       (then, function(params0) {
-        var gibUgen = makeGibUgen(ugen.name, params0)
+        var gibUgen = makeGibUgen(metadata.name, params0)
+        meta(gibUgen, metadata)
 
         vv(params)
           (any)
@@ -110,13 +167,24 @@ wires.ugens.make = function() {
   }
 
 
-  function makeParams(ugen, args) {
+  function makeParams(metadata, args) {
     var params = args[args.length - 1]
 
     if (isObject(params)) args = args.slice(0, -1)
     else params = {}
 
-    return setProps(params, ugen.paramNames, args)
+    return setProps(params, metadata.paramNames, args)
+  }
+
+
+  function defaults(target, source) {
+    for (var k in source) {
+      if (!source.hasOwnProperty(k)) continue
+      if (k in target) continue
+      target[k] = source[k]
+    }
+
+    return target
   }
 
 
@@ -151,6 +219,7 @@ wires.ugens.make = function() {
   }
 
 
+  make.makeParams = makeParams
   return make
 }()
 
@@ -173,12 +242,19 @@ wires.out = function() {
       then = sig.then,
       spread = sig.spread
 
+  var meta = wires.ugens.meta
+
+
   function out(ugen, bus) {
     return vv([ugen, bus || wires.master])
       (all)
       (then, spread(function(ugen, bus) {
         ugen.connect(bus)
         wires.lives.store.push(ugen)
+
+        var hook = (meta(ugen).hooks || 0).connect
+        if (hook) hook(ugen)
+
         return ugen
       }))
       ()
@@ -257,8 +333,8 @@ wires.gc = function() {
   wires.init({
     gib: Gibberish,
     master: 'out',
-    meta: wires.ugens.meta,
-    maxLives: 512,
+    metadata: wires.ugens.metadata,
+    maxLives: 256,
     maintainInterval: 2000
   })
 })()

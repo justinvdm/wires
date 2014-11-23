@@ -7,7 +7,8 @@ describe("wires.out", function() {
       bus = w.bus,
       sine = w.sine,
       stop = w.stop,
-      master = w.master
+      master = w.master,
+      make = w.ugens.make
 
   it("should connect the ugen to the given bus", function(done) {
     vv([sine(), bus()])
@@ -21,7 +22,7 @@ describe("wires.out", function() {
   })
 
   it("should use the master bus as the default bus", function(done) {
-    vv(w.sine())
+    vv(sine())
       (then, function(ugen) {
         out(ugen)
         master.inputs.should.have.length(1)
@@ -29,5 +30,29 @@ describe("wires.out", function() {
         stop(ugen)
         done()
      })
+  })
+
+  it("should support a ugen connect hook", function() {
+    var results = []
+
+    function hook(ugen) {
+      results.push(ugen)
+    }
+
+    vv({
+        name: 'Sine',
+        paramNames: [],
+        exportName: 'sine',
+        hooks: {connect: hook}
+      })
+      (make, [])
+      (then, function(ugen) {
+        results.should.be.empty
+        return ugen
+      })
+      (out, bus())
+      (then, function(ugen) {
+        results.should.deep.equal([ugen])
+      })
   })
 })

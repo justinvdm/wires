@@ -9,15 +9,19 @@ wires.ugens.make = function() {
       sticky = sig.sticky,
       spread = sig.spread
 
+  var meta = wires.ugens.meta
 
-  function make(ugen, args) {
+
+  function make(metadata, args) {
     var out = sticky()
-    var params = makeParams(ugen, args)
+    var params = makeParams(metadata, args)
+    if (metadata.defaults) defaults(params, metadata.defaults)
 
     vv(params)
       (all)
       (then, function(params0) {
-        var gibUgen = makeGibUgen(ugen.name, params0)
+        var gibUgen = makeGibUgen(metadata.name, params0)
+        meta(gibUgen, metadata)
 
         vv(params)
           (any)
@@ -32,13 +36,24 @@ wires.ugens.make = function() {
   }
 
 
-  function makeParams(ugen, args) {
+  function makeParams(metadata, args) {
     var params = args[args.length - 1]
 
     if (isObject(params)) args = args.slice(0, -1)
     else params = {}
 
-    return setProps(params, ugen.paramNames, args)
+    return setProps(params, metadata.paramNames, args)
+  }
+
+
+  function defaults(target, source) {
+    for (var k in source) {
+      if (!source.hasOwnProperty(k)) continue
+      if (k in target) continue
+      target[k] = source[k]
+    }
+
+    return target
   }
 
 
@@ -73,5 +88,6 @@ wires.ugens.make = function() {
   }
 
 
+  make.makeParams = makeParams
   return make
 }()
