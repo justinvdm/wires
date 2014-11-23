@@ -1,4 +1,4 @@
-describe("wired.utils", function() {
+describe("wires.utils", function() {
   var utils = w.utils,
       rm = utils.rm
 

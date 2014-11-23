@@ -1,8 +1,8 @@
 ;(function() {
-  wired.init({
+  wires.init({
     gib: Gibberish,
     master: 'out',
-    meta: wired.ugens.meta,
+    meta: wires.ugens.meta,
     maxLives: 512,
     maintainInterval: 2000
   })

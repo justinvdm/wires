@@ -1,5 +1,5 @@
-wired.gc = function() {
-  var stopLive = wired.stop
+wires.gc = function() {
+  var stopLive = wires.stop
 
 
   function gc() {

@@ -1,4 +1,4 @@
-wired.testUtils = function() {
+wires.testUtils = function() {
   var all = sig.all,
       then = sig.then,
       reset = sig.reset,

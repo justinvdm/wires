@@ -1,4 +1,4 @@
-wired.ugens.make = function() {
+wires.ugens.make = function() {
   var any = sig.any,
       all = sig.all,
       put = sig.put,
@@ -43,7 +43,7 @@ wired.ugens.make = function() {
 
 
   function makeGibUgen(name, params) {
-    var type = wired.gib[name]
+    var type = wires.gib[name]
 
     return !isEmpty(params)
       ? new type(params)

@@ -1,4 +1,4 @@
-describe("wired.gc", function() {
+describe("wires.gc", function() {
   var gc = w.gc,
       cull = gc.cull,
       start = gc.start,

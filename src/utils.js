@@ -1,4 +1,4 @@
-wired.utils = function() {
+wires.utils = function() {
   function rm(arr, x) {
     var i = arr.indexOf(x)
     if (i > -1) arr.splice(i, 1)

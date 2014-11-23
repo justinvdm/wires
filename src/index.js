@@ -1,1 +1,1 @@
-var wired = {}
+var wires = {}

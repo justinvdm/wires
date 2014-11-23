@@ -1,4 +1,4 @@
-describe("wired:ugens", function() {
+describe("wires:ugens", function() {
   function capture(s) {
     var values = []
 

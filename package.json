@@ -1,12 +1,12 @@
 {
-  "name": "wired-js",
+  "name": "wires-js",
   "version": "0.0.0",
   "description": "gibberish-based sound making for the browser",
   "repository": {
     "type": "git",
-    "url": "git://github.com/justinvdm/wired-js.git"
+    "url": "git://github.com/justinvdm/wires-js.git"
   },
-  "main": "wired.js",
+  "main": "wires.js",
   "scripts": {
     "test": "gulp"
   },

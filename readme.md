@@ -1,1 +1,1 @@
-# wired
+# wires

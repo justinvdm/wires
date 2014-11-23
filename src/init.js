@@ -1,21 +1,21 @@
-wired.init = function() {
+wires.init = function() {
   function init(conf) {
     defineUgens(conf)
 
-    wired.gib = conf.gib
-    wired.gib.init()
-    wired.master = wired.gib[conf.master]
+    wires.gib = conf.gib
+    wires.gib.init()
+    wires.master = wires.gib[conf.master]
 
-    wired.lives = wired.gc()
-    wired.gc.start(wired.lives, conf.maxLives, conf.maintainInterval)
+    wires.lives = wires.gc()
+    wires.gc.start(wires.lives, conf.maxLives, conf.maintainInterval)
   }
   
 
   function defineUgens(conf) {
-    var define = wired.ugens.define
+    var define = wires.ugens.define
 
     conf.meta.forEach(function(ugen) {
-      wired[ugen.exportName] = define(ugen)
+      wires[ugen.exportName] = define(ugen)
     })
   }
 

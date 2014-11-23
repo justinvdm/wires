@@ -1,5 +1,5 @@
-wired.ugens.define = function() {
-  var make = wired.ugens.make
+wires.ugens.define = function() {
+  var make = wires.ugens.make
 
 
   function define(ugen) {

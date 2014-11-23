@@ -1,4 +1,4 @@
-describe("wired.stop", function() {
+describe("wires.stop", function() {
   var all = sig.all,
       then = sig.then,
       spread = sig.spread

@@ -1,1 +1,1 @@
-var w = wired
+var w = wires

@@ -1,9 +1,9 @@
-wired.stop = function() {
+wires.stop = function() {
   var all = sig.all,
       then = sig.then,
       spread = sig.spread
 
-  var rm = wired.utils.rm
+  var rm = wires.utils.rm
 
 
   function stop(ugen, bus) {
@@ -12,7 +12,7 @@ wired.stop = function() {
       (then, spread(function(ugen, bus) {
         if (!bus) ugen.disconnect()
         else ugen.disconnect(bus)
-        rm(wired.lives.store, ugen)
+        rm(wires.lives.store, ugen)
         return ugen
       }))
       ()

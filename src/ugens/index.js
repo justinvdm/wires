@@ -1,1 +1,1 @@
-wired.ugens = {}
+wires.ugens = {}

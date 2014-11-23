@@ -5,13 +5,13 @@
   } else if (typeof exports === 'object') {
     module.exports = factory(require('sig-js'), require('drainpipe'), require('gibberish-dsp'));
   } else {
-    root.wired = factory(root.sig, root.v, root.Gibberish);
+    root.wires = factory(root.sig, root.v, root.Gibberish);
   }
 }(this, function(sig, v, Gibberish) {
 
-var wired = {}
+var wires = {}
 
-wired.utils = function() {
+wires.utils = function() {
   function rm(arr, x) {
     var i = arr.indexOf(x)
     if (i > -1) arr.splice(i, 1)
@@ -24,24 +24,24 @@ wired.utils = function() {
   }
 }()
 
-wired.init = function() {
+wires.init = function() {
   function init(conf) {
     defineUgens(conf)
 
-    wired.gib = conf.gib
-    wired.gib.init()
-    wired.master = wired.gib[conf.master]
+    wires.gib = conf.gib
+    wires.gib.init()
+    wires.master = wires.gib[conf.master]
 
-    wired.lives = wired.gc()
-    wired.gc.start(wired.lives, conf.maxLives, conf.maintainInterval)
+    wires.lives = wires.gc()
+    wires.gc.start(wires.lives, conf.maxLives, conf.maintainInterval)
   }
   
 
   function defineUgens(conf) {
-    var define = wired.ugens.define
+    var define = wires.ugens.define
 
     conf.meta.forEach(function(ugen) {
-      wired[ugen.exportName] = define(ugen)
+      wires[ugen.exportName] = define(ugen)
     })
   }
 
@@ -49,9 +49,9 @@ wired.init = function() {
   return init
 }()
 
-wired.ugens = {}
+wires.ugens = {}
 
-wired.ugens.meta = [{
+wires.ugens.meta = [{
   exportName: 'sine',
   name: 'Sine',
   paramNames: [
@@ -76,7 +76,7 @@ wired.ugens.meta = [{
   ]
 }]
 
-wired.ugens.make = function() {
+wires.ugens.make = function() {
   var any = sig.any,
       all = sig.all,
       put = sig.put,
@@ -121,7 +121,7 @@ wired.ugens.make = function() {
 
 
   function makeGibUgen(name, params) {
-    var type = wired.gib[name]
+    var type = wires.gib[name]
 
     return !isEmpty(params)
       ? new type(params)
@@ -154,8 +154,8 @@ wired.ugens.make = function() {
   return make
 }()
 
-wired.ugens.define = function() {
-  var make = wired.ugens.make
+wires.ugens.define = function() {
+  var make = wires.ugens.make
 
 
   function define(ugen) {
@@ -168,17 +168,17 @@ wired.ugens.define = function() {
   return define
 }()
 
-wired.out = function() {
+wires.out = function() {
   var all = sig.all,
       then = sig.then,
       spread = sig.spread
 
   function out(ugen, bus) {
-    return vv([ugen, bus || wired.master])
+    return vv([ugen, bus || wires.master])
       (all)
       (then, spread(function(ugen, bus) {
         ugen.connect(bus)
-        wired.lives.store.push(ugen)
+        wires.lives.store.push(ugen)
         return ugen
       }))
       ()
@@ -188,12 +188,12 @@ wired.out = function() {
   return out
 }()
 
-wired.stop = function() {
+wires.stop = function() {
   var all = sig.all,
       then = sig.then,
       spread = sig.spread
 
-  var rm = wired.utils.rm
+  var rm = wires.utils.rm
 
 
   function stop(ugen, bus) {
@@ -202,7 +202,7 @@ wired.stop = function() {
       (then, spread(function(ugen, bus) {
         if (!bus) ugen.disconnect()
         else ugen.disconnect(bus)
-        rm(wired.lives.store)
+        rm(wires.lives.store, ugen)
         return ugen
       }))
       ()
@@ -212,8 +212,8 @@ wired.stop = function() {
   return stop
 }()
 
-wired.gc = function() {
-  var stopLive = wired.stop
+wires.gc = function() {
+  var stopLive = wires.stop
 
 
   function gc() {
@@ -235,7 +235,7 @@ wired.gc = function() {
 
   function start(lives, n, interval) {
     if (lives.cullId !== null) return
-    lives.cullId = setInterval(cull, interval, n)
+    lives.cullId = setInterval(cull, interval, lives, n)
     return lives
   }
 
@@ -254,15 +254,15 @@ wired.gc = function() {
 }()
 
 ;(function() {
-  wired.init({
+  wires.init({
     gib: Gibberish,
     master: 'out',
-    meta: wired.ugens.meta,
+    meta: wires.ugens.meta,
     maxLives: 512,
     maintainInterval: 2000
   })
 })()
 
-return wired;
+return wires;
 
 }));

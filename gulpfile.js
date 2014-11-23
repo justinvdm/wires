@@ -21,10 +21,10 @@ var src = [
 
 gulp.task('build', function () {
   return gulp.src(src)
-    .pipe(concat('wired.js'))
+    .pipe(concat('wires.js'))
     .pipe(umd({
-      exports: 'wired',
-      namespace: 'wired',
+      exports: 'wires',
+      namespace: 'wires',
       deps: [{
         name: 'sig',
         amdName: 'sig-js',
