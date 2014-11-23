@@ -39,7 +39,7 @@ describe("wires.gc", function() {
       lives.store = ugens
       connected(b).should.deep.equal(ugens)
       cull(lives, 3)
-      connected(b).should.deep.equal(ugens.slice(0, 3))
+      connected(b).should.deep.equal(ugens.slice(-3))
     })
 
     it("should stop tracking stopped ugens", function() {
@@ -49,7 +49,7 @@ describe("wires.gc", function() {
 
       lives.store = ugens
       cull(lives, 3)
-      lives.store.should.deep.equal(ugens.slice(0, 3))
+      lives.store.should.deep.equal(ugens.slice(-3))
     })
   })
 
@@ -64,17 +64,17 @@ describe("wires.gc", function() {
 
       vv(timer())
         (at, 110, function() {
-          lives.store.should.deep.equal(ugens.slice(0, 3))
+          lives.store.should.deep.equal(ugens.slice(-3))
           ugens = makeUgens(b, 5)
           lives.store = ugens
         })
         (at, 210, function() {
-          lives.store.should.deep.equal(ugens.slice(0, 3))
+          lives.store.should.deep.equal(ugens.slice(-3))
           ugens = makeUgens(b, 5)
           lives.store = ugens
         })
         (at, 310, function() {
-          lives.store.should.deep.equal(ugens.slice(0, 3))
+          lives.store.should.deep.equal(ugens.slice(-3))
         })
         (end, done)
     })
@@ -91,7 +91,7 @@ describe("wires.gc", function() {
 
       vv(timer())
         (at, 110, function() {
-          lives.store.should.deep.equal(ugens.slice(0, 3))
+          lives.store.should.deep.equal(ugens.slice(-3))
           ugens = makeUgens(b, 5)
           lives.store = ugens
           stop(lives)
