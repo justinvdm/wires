@@ -1,10 +1,13 @@
 wired.init = function() {
   function init(conf) {
+    defineUgens(conf)
+
     wired.gib = conf.gib
     wired.gib.init()
     wired.master = wired.gib[conf.master]
 
-    defineUgens(conf)
+    wired.lives = wired.gc()
+    wired.gc.start(wired.lives, conf.maxLives, conf.maintainInterval)
   }
   
 

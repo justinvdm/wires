@@ -14,6 +14,7 @@ var src = [
   'src/ugens/define.js',
   'src/out.js',
   'src/stop.js',
+  'src/gc.js',
   'src/tail.js'
 ]
 
@@ -59,6 +60,7 @@ gulp.task('test', function() {
     .concat(src)
     .concat([
       'tests/init.js',
+      'tests/testUtils.js',
       'tests/**/*.test.js'
     ]))
     .pipe(karma({

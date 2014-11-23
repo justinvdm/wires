@@ -26,11 +26,14 @@ wired.utils = function() {
 
 wired.init = function() {
   function init(conf) {
+    defineUgens(conf)
+
     wired.gib = conf.gib
     wired.gib.init()
     wired.master = wired.gib[conf.master]
 
-    defineUgens(conf)
+    wired.lives = wired.gc()
+    wired.gc.start(wired.lives, conf.maxLives, conf.maintainInterval)
   }
   
 
@@ -175,6 +178,7 @@ wired.out = function() {
       (all)
       (then, spread(function(ugen, bus) {
         ugen.connect(bus)
+        wired.lives.store.push(ugen)
         return ugen
       }))
       ()
@@ -189,6 +193,8 @@ wired.stop = function() {
       then = sig.then,
       spread = sig.spread
 
+  var rm = wired.utils.rm
+
 
   function stop(ugen, bus) {
     return vv([ugen, bus])
@@ -196,6 +202,7 @@ wired.stop = function() {
       (then, spread(function(ugen, bus) {
         if (!bus) ugen.disconnect()
         else ugen.disconnect(bus)
+        rm(wired.lives.store)
         return ugen
       }))
       ()
@@ -205,11 +212,54 @@ wired.stop = function() {
   return stop
 }()
 
+wired.gc = function() {
+  var stopLive = wired.stop
+
+
+  function gc() {
+    return {
+      store: [],
+      cullId: null
+    }
+  }
+
+
+  function cull(lives, hi) {
+    var store = lives.store
+    var n = store.length
+    while (n-- > hi) stopLive(store[n])
+    lives.store = store.slice(0, hi)
+    return lives
+  }
+
+
+  function start(lives, n, interval) {
+    if (lives.cullId !== null) return
+    lives.cullId = setInterval(cull, interval, n)
+    return lives
+  }
+
+
+  function stop(lives) {
+    clearInterval(lives.cullId)
+    lives.cullId = null
+    return lives
+  }
+
+
+  gc.cull = cull
+  gc.start = start
+  gc.stop = stop
+  return gc
+}()
+
 ;(function() {
   wired.init({
     gib: Gibberish,
     master: 'out',
-    meta: wired.ugens.meta
+    meta: wired.ugens.meta,
+    maxLives: 512,
+    maintainInterval: 2000
   })
 })()
 

@@ -8,6 +8,7 @@ wired.out = function() {
       (all)
       (then, spread(function(ugen, bus) {
         ugen.connect(bus)
+        wired.lives.store.push(ugen)
         return ugen
       }))
       ()
