@@ -1,4 +1,4 @@
-wires.ugens.meta = [{
+wires.ugens.metadata = [{
   exportName: 'sine',
   name: 'Sine',
   paramNames: [

@@ -2,7 +2,7 @@
   wires.init({
     gib: Gibberish,
     master: 'out',
-    meta: wires.ugens.meta,
+    metadata: wires.ugens.metadata,
     maxLives: 512,
     maintainInterval: 2000
   })

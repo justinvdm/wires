@@ -14,7 +14,7 @@ wires.init = function() {
   function defineUgens(conf) {
     var define = wires.ugens.define
 
-    conf.meta.forEach(function(ugen) {
+    conf.metadata.forEach(function(ugen) {
       wires[ugen.exportName] = define(ugen)
     })
   }

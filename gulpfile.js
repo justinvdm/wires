@@ -9,7 +9,7 @@ var src = [
   'src/utils.js',
   'src/init.js',
   'src/ugens/index.js',
-  'src/ugens/meta.js',
+  'src/ugens/metadata.js',
   'src/ugens/make.js',
   'src/ugens/define.js',
   'src/out.js',
