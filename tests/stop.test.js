@@ -1,8 +1,12 @@
 describe("wired.stop", function() {
+  var all = sig.all,
+      then = sig.then,
+      spread = sig.spread
+
   it("should disconnect the ugen from given bus", function(done) {
     vv([w.sine(), w.bus(), w.bus()])
-      (sig.all)
-      (sig.then, sig.spread(function(ugen, bus, bus2) {
+      (all)
+      (then, spread(function(ugen, bus, bus2) {
         w.out(ugen, bus)
         bus.inputs.should.have.length(1)
         bus.inputs[0].value.should.equal(ugen)

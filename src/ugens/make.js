@@ -1,21 +1,32 @@
 wired.ugens.make = function() {
+  var any = sig.any,
+      all = sig.all,
+      put = sig.put,
+      map = sig.map,
+      then = sig.then,
+      isSig = sig.isSig,
+      depend = sig.depend,
+      sticky = sig.sticky,
+      spread = sig.spread
+
+
   function make(ugen, args) {
-    var out = sig.sticky()
+    var out = sticky()
     var params = makeParams(ugen, args)
 
     vv(params)
-      (sig.all)
-      (sig.then, function(params0) {
+      (all)
+      (then, function(params0) {
         var gibUgen = makeGibUgen(ugen.name, params0)
 
         vv(params)
-          (sig.any)
-          (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
-          (sig.depend, out)
+          (any)
+          (map, spread(function(v, k) { gibUgen[k] = v }))
+          (depend, out)
 
-        sig.put(out, gibUgen)
+        put(out, gibUgen)
       })
-      (sig.depend, out)
+      (depend, out)
 
     return out
   }
@@ -48,7 +59,7 @@ wired.ugens.make = function() {
 
 
   function isObject(v) {
-    return !sig.isSig(v)
+    return !isSig(v)
         && v !== null
         && typeof v == 'object'
   }

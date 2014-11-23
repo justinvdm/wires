@@ -29,7 +29,7 @@ wired.init = function() {
     wired.gib = conf.gib
     wired.gib.init()
     wired.master = wired.gib[conf.master]
-    wired.maxLives = conf.maxLives
+
     defineUgens(conf)
   }
   
@@ -74,23 +74,34 @@ wired.ugens.meta = [{
 }]
 
 wired.ugens.make = function() {
+  var any = sig.any,
+      all = sig.all,
+      put = sig.put,
+      map = sig.map,
+      then = sig.then,
+      isSig = sig.isSig,
+      depend = sig.depend,
+      sticky = sig.sticky,
+      spread = sig.spread
+
+
   function make(ugen, args) {
-    var out = sig.sticky()
+    var out = sticky()
     var params = makeParams(ugen, args)
 
     vv(params)
-      (sig.all)
-      (sig.then, function(params0) {
+      (all)
+      (then, function(params0) {
         var gibUgen = makeGibUgen(ugen.name, params0)
 
         vv(params)
-          (sig.any)
-          (sig.map, sig.spread(function(v, k) { gibUgen[k] = v }))
-          (sig.depend, out)
+          (any)
+          (map, spread(function(v, k) { gibUgen[k] = v }))
+          (depend, out)
 
-        sig.put(out, gibUgen)
+        put(out, gibUgen)
       })
-      (sig.depend, out)
+      (depend, out)
 
     return out
   }
@@ -123,7 +134,7 @@ wired.ugens.make = function() {
 
 
   function isObject(v) {
-    return !sig.isSig(v)
+    return !isSig(v)
         && v !== null
         && typeof v == 'object'
   }
@@ -155,12 +166,15 @@ wired.ugens.define = function() {
 }()
 
 wired.out = function() {
+  var all = sig.all,
+      then = sig.then,
+      spread = sig.spread
+
   function out(ugen, bus) {
     return vv([ugen, bus || wired.master])
-      (sig.all)
-      (sig.then, sig.spread(function(ugen, bus) {
+      (all)
+      (then, spread(function(ugen, bus) {
         ugen.connect(bus)
-        wired.lives.store.push(ugen)
         return ugen
       }))
       ()
@@ -171,16 +185,17 @@ wired.out = function() {
 }()
 
 wired.stop = function() {
-  var rm = wired.utils.rm
+  var all = sig.all,
+      then = sig.then,
+      spread = sig.spread
 
 
   function stop(ugen, bus) {
     return vv([ugen, bus])
-      (sig.all)
-      (sig.then, sig.spread(function(ugen, bus) {
+      (all)
+      (then, spread(function(ugen, bus) {
         if (!bus) ugen.disconnect()
         else ugen.disconnect(bus)
-        rm(wired.lives.store)
         return ugen
       }))
       ()
@@ -195,7 +210,6 @@ wired.stop = function() {
     gib: Gibberish,
     master: 'out',
     meta: wired.ugens.meta
-    maxConns: 512
   })
 })()
 
