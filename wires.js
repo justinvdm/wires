@@ -303,8 +303,8 @@ wires.gc = function() {
   function cull(lives, hi) {
     var store = lives.store
     var n = store.length - hi
-    while (n--) stopLive(store[n])
-    lives.store = store.slice(-hi)
+    var removed = store.splice(0, n)
+    while (n--) stopLive(removed[n])
     return lives
   }
 
