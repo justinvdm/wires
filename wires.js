@@ -148,22 +148,35 @@ wires.ugens.make = function() {
     var params = makeParams(metadata, args)
     if (metadata.defaults) defaults(params, metadata.defaults)
 
-    vv(params)
-      (all)
-      (then, function(params0) {
+    return sig(function() {
+      var s = val()
+      var gibUgen
+
+      vv(params)
+        (all)
+        (then, enter)
+
+      vv(params)
+        (any, update)
+         
+      resume(s)
+      return s
+
+      function enter(params0) {
         var gibUgen = makeGibUgen(metadata.name, params0)
         meta(gibUgen, metadata)
 
         vv(params)
-          (any)
-          (map, spread(function(v, k) { gibUgen[k] = v }))
-          (depend, out)
+          (map, updateAny)
+          (depend, s)
 
-        put(out, gibUgen)
-      })
-      (depend, out)
+        put(s, gibUgen)
+      }
 
-    return out
+      function update(k, v) {
+        gibUgen[k] = v
+      }
+    })
   }
 
 
