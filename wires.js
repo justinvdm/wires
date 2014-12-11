@@ -133,50 +133,45 @@ wires.ugens.make = function() {
   var any = sig.any,
       all = sig.all,
       put = sig.put,
-      map = sig.map,
       then = sig.then,
       isSig = sig.isSig,
-      depend = sig.depend,
-      sticky = sig.sticky,
+      once = sig.once,
+      val = sig.val,
       spread = sig.spread
 
   var meta = wires.ugens.meta
 
 
   function make(metadata, args) {
-    var out = sticky()
     var params = makeParams(metadata, args)
     if (metadata.defaults) defaults(params, metadata.defaults)
 
-    return sig(function() {
-      var s = val()
-      var gibUgen
+    var s = val()
+    var gibUgen
 
-      vv(params)
-        (all)
-        (then, enter)
+    vv(params)
+      (all)
+      (once)
+      (then, enter)
+      (then, s)
 
-      vv(params)
-        (any, update)
-         
-      resume(s)
-      return s
+    vv(params)
+      (any)
+      (then, spread(update))
+      (then, s)
 
-      function enter(params0) {
-        var gibUgen = makeGibUgen(metadata.name, params0)
-        meta(gibUgen, metadata)
+    return s
 
-        vv(params)
-          (map, updateAny)
-          (depend, s)
+    function enter(params0) {
+      gibUgen = makeGibUgen(metadata.name, params0)
+      meta(gibUgen, metadata)
+      put(this, gibUgen)
+    }
 
-        put(s, gibUgen)
-      }
-
-      function update(k, v) {
-        gibUgen[k] = v
-      }
-    })
+    function update(v, k) {
+      if (!gibUgen) return
+      gibUgen[k] = v
+    }
   }
 
 

@@ -4,7 +4,7 @@ wires.testUtils = function() {
       reset = sig.reset,
       except = sig.except,
       cleanup = sig.cleanup,
-      resolve = sig.resolve
+      put = sig.put
 
 
   function timer() {
@@ -17,7 +17,7 @@ wires.testUtils = function() {
 
     var id = setTimeout(function() {
       fn()
-      resolve(s)
+      put(s, null)
     }, ms)
 
     cleanup(s, function() {
