@@ -137,7 +137,8 @@ wires.ugens.make = function() {
       isSig = sig.isSig,
       once = sig.once,
       val = sig.val,
-      spread = sig.spread
+      spread = sig.spread,
+      depend = sig.depend
 
   var meta = wires.ugens.meta
 
@@ -153,19 +154,19 @@ wires.ugens.make = function() {
       (all)
       (once)
       (then, enter)
-      (then, s)
+      (depend, s)
 
     vv(params)
       (any)
       (then, spread(update))
-      (then, s)
+      (depend, s)
 
     return s
 
     function enter(params0) {
       gibUgen = makeGibUgen(metadata.name, params0)
       meta(gibUgen, metadata)
-      put(this, gibUgen)
+      put(s, gibUgen)
     }
 
     function update(v, k) {
