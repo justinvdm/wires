@@ -14,7 +14,7 @@ wires.gc = function() {
     var store = lives.store
     var n = store.length - hi
     var removed = store.splice(0, n)
-    while (n--) stopLive(removed[n])
+    while (n-- > 0) stopLive(removed[n])
     return lives
   }
 
