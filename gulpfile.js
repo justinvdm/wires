@@ -15,6 +15,7 @@ var src = [
   'src/ugens/define.js',
   'src/out.js',
   'src/stop.js',
+  'src/rout.js',
   'src/gc.js',
   'src/tail.js'
 ]

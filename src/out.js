@@ -1,6 +1,6 @@
 wires.out = function() {
   var all = sig.all,
-      then = sig.then,
+      map = sig.map,
       spread = sig.spread
 
   var meta = wires.ugens.meta
@@ -9,7 +9,7 @@ wires.out = function() {
   function out(ugen, bus) {
     return vv([ugen, bus || wires.master])
       (all)
-      (then, spread(function(ugen, bus) {
+      (map, spread(function(ugen, bus) {
         ugen.connect(bus)
         wires.lives.store.push(ugen)
 

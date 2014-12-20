@@ -248,7 +248,7 @@ wires.ugens.define = function() {
 
 wires.out = function() {
   var all = sig.all,
-      then = sig.then,
+      map = sig.map,
       spread = sig.spread
 
   var meta = wires.ugens.meta
@@ -257,7 +257,7 @@ wires.out = function() {
   function out(ugen, bus) {
     return vv([ugen, bus || wires.master])
       (all)
-      (then, spread(function(ugen, bus) {
+      (map, spread(function(ugen, bus) {
         ugen.connect(bus)
         wires.lives.store.push(ugen)
 
@@ -275,7 +275,7 @@ wires.out = function() {
 
 wires.stop = function() {
   var all = sig.all,
-      then = sig.then,
+      map = sig.map,
       spread = sig.spread
 
   var rm = wires.utils.rm
@@ -284,17 +284,60 @@ wires.stop = function() {
   function stop(ugen, bus) {
     return vv([ugen, bus])
       (all)
-      (then, spread(function(ugen, bus) {
-        if (!bus) ugen.disconnect()
-        else ugen.disconnect(bus)
-        rm(wires.lives.store, ugen)
-        return ugen
+      (map, spread(function(obj, bus) {
+        return obj instanceof wires.gib.bus
+          ? disconnectBus(obj)
+          : disconnectUgen(obj, bus)
       }))
       ()
   }
 
 
+  function disconnectBus(bus) {
+    var inputs = bus.inputs
+    var i = inputs.length
+    var input
+    while (i--) disconnectUgen(inputs[i].value, bus)
+    return bus
+  }
+
+
+  function disconnectUgen(ugen, bus) {
+    if (!bus) ugen.disconnect()
+    else ugen.disconnect(bus)
+    rm(wires.lives.store, ugen)
+    return ugen
+  }
+
+
   return stop
+}()
+
+wires.rout = function() {
+  var ensure = sig.ensure,
+      redir = sig.redir,
+      then = sig.then
+
+  var out = wires.out,
+      stop = wires.stop
+
+
+  function rout(ugen, bus) {
+    var s = sig()
+
+    vv(bus || wires.master)
+      (stop)
+      (then, function() {
+        vv(out(ugen, bus))
+          (redir, s)
+      })
+      (redir, s)
+
+    return s
+  }
+
+
+  return rout
 }()
 
 wires.gc = function() {
