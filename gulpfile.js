@@ -16,6 +16,7 @@ var src = [
   'src/out.js',
   'src/stop.js',
   'src/rout.js',
+  'src/ctl.js',
   'src/gc.js',
   'src/tail.js'
 ]
