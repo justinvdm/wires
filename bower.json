@@ -12,7 +12,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "sig-js": "^0.1.0",
+    "sig-js": "^0.1.0-alpha",
     "drainpipe": "^0.1.0",
     "gibberish-dsp": "git@github.com:charlieroberts/Gibberish.git"
   }
