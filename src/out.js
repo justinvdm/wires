@@ -9,7 +9,7 @@ wires.out = function() {
   function out(ugen, bus) {
     return vv([ugen, bus || wires.master])
       (all)
-      (map, spread(function(ugen, bus) {
+      (map, spread, function(ugen, bus) {
         ugen.connect(bus)
         wires.lives.store.push(ugen)
 
@@ -17,7 +17,7 @@ wires.out = function() {
         if (hook) hook(ugen)
 
         return ugen
-      }))
+      })
       ()
   }
 

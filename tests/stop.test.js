@@ -12,7 +12,7 @@ describe("wires.stop", function() {
   it("should disconnect the ugen from given bus", function(done) {
     vv([sine(), bus(), bus()])
       (all)
-      (then, spread(function(ugen, bus, bus2) {
+      (then, spread, function(ugen, bus, bus2) {
         out(ugen, bus)
         bus.inputs.should.have.length(1)
         bus.inputs[0].value.should.equal(ugen)
@@ -30,13 +30,13 @@ describe("wires.stop", function() {
         bus2.inputs.should.have.length(0)
 
         done()
-      }))
+      })
   })
 
   it("should disconnect all ugens from a given bus", function(done) {
     vv([bus(), sine(), sine()])
       (all)
-      (then, spread(function(bus, ugen1, ugen2) {
+      (then, spread, function(bus, ugen1, ugen2) {
         out(ugen1, bus)
         out(ugen2, bus)
         bus.inputs.should.have.length(2)
@@ -47,6 +47,6 @@ describe("wires.stop", function() {
         bus.inputs.should.be.empty
 
         done()
-      }))
+      })
   })
 })

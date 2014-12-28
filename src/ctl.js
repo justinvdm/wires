@@ -7,10 +7,10 @@ wires.ctl = function() {
   function ctl(ugen, params) {
     return vv([ugen, params])
       (all)
-      (map, spread(function(ugen, params) {
+      (map, spread, function(ugen, params) {
         for (var k in params) if (params.hasOwnProperty(k)) ugen[k] = params[k]
         return ugen
-      }))
+      })
       ()
   }
 

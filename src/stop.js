@@ -9,11 +9,11 @@ wires.stop = function() {
   function stop(ugen, bus) {
     return vv([ugen, bus])
       (all)
-      (map, spread(function(obj, bus) {
+      (map, spread, function(obj, bus) {
         return obj instanceof wires.gib.bus
           ? disconnectBus(obj)
           : disconnectUgen(obj, bus)
-      }))
+      })
       ()
   }
 

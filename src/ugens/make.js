@@ -27,7 +27,7 @@ wires.ugens.make = function() {
 
     vv(params)
       (any)
-      (then, spread(update))
+      (then, spread, update)
       (redir, out)
 
     return out
