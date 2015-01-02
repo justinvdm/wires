@@ -3,7 +3,7 @@
     gib: Gibberish,
     master: 'out',
     metadata: wires.ugens.metadata,
-    maxLives: 512,
+    maxLives: 128,
     maintainInterval: 2000
   })
 })()
