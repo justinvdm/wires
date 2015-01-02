@@ -158,7 +158,7 @@ wires.ugens.make = function() {
 
     vv(params)
       (any)
-      (then, spread(update))
+      (then, spread, update)
       (redir, out)
 
     return out
@@ -257,7 +257,7 @@ wires.out = function() {
   function out(ugen, bus) {
     return vv([ugen, bus || wires.master])
       (all)
-      (map, spread(function(ugen, bus) {
+      (map, spread, function(ugen, bus) {
         ugen.connect(bus)
         wires.lives.store.push(ugen)
 
@@ -265,7 +265,7 @@ wires.out = function() {
         if (hook) hook(ugen)
 
         return ugen
-      }))
+      })
       ()
   }
 
@@ -284,11 +284,11 @@ wires.stop = function() {
   function stop(ugen, bus) {
     return vv([ugen, bus])
       (all)
-      (map, spread(function(obj, bus) {
+      (map, spread, function(obj, bus) {
         return obj instanceof wires.gib.bus
           ? disconnectBus(obj)
           : disconnectUgen(obj, bus)
-      }))
+      })
       ()
   }
 
@@ -349,10 +349,10 @@ wires.ctl = function() {
   function ctl(ugen, params) {
     return vv([ugen, params])
       (all)
-      (map, spread(function(ugen, params) {
+      (map, spread, function(ugen, params) {
         for (var k in params) if (params.hasOwnProperty(k)) ugen[k] = params[k]
         return ugen
-      }))
+      })
       ()
   }
 
