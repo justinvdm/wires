@@ -67,7 +67,7 @@ gulp.task('test', function() {
       'tests/**/*.test.js'
     ]))
     .pipe(karma({
-      action: 'watch',
+      action: 'run',
       frameworks: ['mocha', 'chai'],
       browsers: ['Chrome']
     }))
@@ -75,3 +75,8 @@ gulp.task('test', function() {
 
 
 gulp.task('default', ['build', 'test'])
+
+
+gulp.task('watch', function() {
+  gulp.watch(['src/**/*.js', 'tests/**/*.js'], ['default']);
+});
