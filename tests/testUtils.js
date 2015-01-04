@@ -3,7 +3,8 @@ wires.testUtils = function() {
       then = sig.then,
       reset = sig.reset,
       except = sig.except,
-      cleanup = sig.cleanup,
+      setup = sig.setup,
+      teardown = sig.teardown,
       put = sig.put
 
 
@@ -14,15 +15,20 @@ wires.testUtils = function() {
 
   timer.at = function(d, ms, fn) {
     var s = sig()
+    var id
 
-    var id = setTimeout(function() {
-      fn()
-      put(s, null)
-    }, ms)
+    setup(s, function() {
+      id = setTimeout(fire, ms)
+    })
 
-    cleanup(s, function() {
+    teardown(s, function() {
       clearTimeout(id)
     })
+
+    function fire() {
+      fn()
+      put(s, null)
+    }
 
     d.runs.push(s)
     return d
