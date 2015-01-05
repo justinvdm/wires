@@ -10,7 +10,7 @@ wires.stop = function() {
     return vv([ugen, bus])
       (all)
       (map, spread, function(obj, bus) {
-        return obj instanceof wires.gib.bus
+        return obj instanceof Gibberish.bus
           ? disconnectBus(obj)
           : disconnectUgen(obj, bus)
       })

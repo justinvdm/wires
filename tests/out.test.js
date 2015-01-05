@@ -40,7 +40,7 @@ describe("wires.out", function() {
     }
 
     vv({
-        name: 'Sine',
+        ctor: Gibberish.Sine,
         paramNames: [],
         exportName: 'sine',
         hooks: {connect: hook}

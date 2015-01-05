@@ -1,4 +1,6 @@
 wires.ugens.make = function() {
+  var isArray = Array.isArray
+
   var any = sig.any,
       all = sig.all,
       put = sig.put,
@@ -33,7 +35,7 @@ wires.ugens.make = function() {
     return out
 
     function enter(params0) {
-      gibUgen = makeGibUgen(metadata.name, params0)
+      gibUgen = applyNew(metadata.ctor, params0)
       meta(gibUgen, metadata)
       put(this, gibUgen)
     }
@@ -46,12 +48,16 @@ wires.ugens.make = function() {
 
 
   function makeParams(metadata, args) {
-    var params = args[args.length - 1]
+    var params = args
 
-    if (isObject(params)) args = args.slice(0, -1)
-    else params = {}
+    if (!metadata.positionalParams) {
+      params = args[args.length - 1]
+      if (isObject(params)) args = args.slice(0, -1)
+      else params = {}
+      setProps(params, metadata.paramNames, args)
+    }
 
-    return setProps(params, metadata.paramNames, args)
+    return params
   }
 
 
@@ -66,12 +72,15 @@ wires.ugens.make = function() {
   }
 
 
-  function makeGibUgen(name, params) {
-    var type = wires.gib[name]
+  function applyNew(ctor, params) {
+    function Surrogate(args) {
+      return ctor.apply(this, args)
+    }
 
-    return !isEmpty(params)
-      ? new type(params)
-      : new type()
+    Surrogate.prototype = ctor.prototype
+    if (isArray(params)) return new Surrogate(params)
+    if (isEmpty(params)) return new Surrogate()
+    return new Surrogate([params])
   }
 
 
@@ -97,6 +106,5 @@ wires.ugens.make = function() {
   }
 
 
-  make.makeParams = makeParams
   return make
 }()

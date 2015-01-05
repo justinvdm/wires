@@ -1,13 +1,18 @@
-wires.ugens.define = function() {
-  var make = wires.ugens.make
+;(function() {
+  var slice = Array.prototype.slice
+
+  var make = wires.ugens.make,
+      metadata = wires.ugens.metadata
 
 
   function define(ugen) {
     return function() {
-      return make(ugen, Array.prototype.slice.call(arguments))
+      return make(ugen, slice.call(arguments))
     }
   }
 
 
-  return define
-}()
+  metadata.forEach(function(ugen) {
+    wires[ugen.exportName] = define(ugen)
+  })
+})()
