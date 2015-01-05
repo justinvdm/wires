@@ -23,7 +23,7 @@ wires.ugens.metadata = [{
   ]
 }, {
   name: 'Sampler',
-  exportName: 'sampler',
+  exportName: 'sample',
   paramNames: [
     'file',
     'pitch',
