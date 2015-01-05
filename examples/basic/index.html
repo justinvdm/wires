@@ -9,11 +9,33 @@
     <script src="../../bower_components/drainpipe/drainpipe.js"></script>
     <script src="../../wires.js"></script>
     <script>
-var w = wires
+var put = sig.put
 
-vv(440)
- (w.sine)
- (w.out)
+var sine = wires.sine,
+    square = wires.square,
+    add = wires.add,
+    mul = wires.mul,
+    out = wires.out
+
+
+var s = sig()
+
+vv(7)
+  (sine)
+  (mul, 220)
+  (add, 440)
+  (mul, s)
+  (square)
+  (out)
+
+vv(s)
+  (mul, 440)
+  (sine)
+  (out)
+
+setInterval(function() {
+  put(s, Math.random())
+}, 200)
     </script>
   </body>
 </html>
