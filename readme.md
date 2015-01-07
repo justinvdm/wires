@@ -49,6 +49,7 @@ $ bower install wires-js
 ```
 
 ```html
+<script src="/bower_components/gibberish-dsp/build/gibberish.js"></script>
 <script src="/bower_components/drainpipe/drainpipe.js"></script>
 <script src="/bower_components/sig-js/sig.js"></script>
 <script src="/bower_components/wires-js/wires.js"></script>
