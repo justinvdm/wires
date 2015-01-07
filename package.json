@@ -1,16 +1,21 @@
 {
   "name": "wires-js",
+  "author": "justinvdm",
   "version": "0.0.0",
   "description": "Gibberish wrapped to work in a reactive way",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/justinvdm/wires.git"
-  },
+  "keywords": [
+    "music",
+    "gibberish",
+    "live coding"
+  ],
   "main": "wires.js",
   "scripts": {
     "test": "gulp"
   },
-  "author": "justinvdm",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/justinvdm/wires.git"
+  },
   "license": "MIT",
   "dependencies": {
     "sig-js": "~0.1.1",

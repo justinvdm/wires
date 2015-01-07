@@ -1,16 +1,22 @@
 {
   "name": "wires-js",
+  "authors": ["justinvdm <justinvdm.0.1.0@gmail.com>"],
   "version": "0.0.0",
-  "authors": [
-    "justinvdm <justinvdm.0.1.0@gmail.com>"
+  "description": "Gibberish wrapped to work in a reactive way",
+  "homepage": "https://github.com/justinvdm/wires",
+  "keywords": [
+    "music",
+    "gibberish",
+    "live coding"
   ],
+  "main": "wires.js",
   "moduleType": [
     "amd",
     "globals",
     "node"
   ],
   "license": "MIT",
-  "private": true,
+  "private": false,
   "dependencies": {
     "sig-js": "~0.1.1",
     "drainpipe": "^0.1.0",

@@ -1,5 +1,7 @@
 # wires
 
+![Build Status](https://api.travis-ci.org/justinvdm/wires.png)
+
 [Gibberish](https://github.com/charlieroberts/Gibberish) wrapped to work in a reactive way.
 
 
