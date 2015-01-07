@@ -44,20 +44,12 @@ setInterval(function() {
 
 ## install
 
-node:
-
 ```
-$ npm install sig-js
-```
-
-browser:
-
-```
-$ bower install sig-js
+$ bower install wires-js
 ```
 
 ```html
-<script src="/bower_components/sig-js/sig.js"></script>
+<script src="/bower_components/wires-js/wires.js"></script>
 ```
 
 ## overview
