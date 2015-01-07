@@ -58,7 +58,7 @@ $ bower install wires-js
 
 ### why
 
-wires really just an experiment to test if a reactive style of programming is useful for live coding situations. [Gibberish](https://github.com/charlieroberts/Gibberish) does a great job by itself, and wires doesn't really provide one with anything that you can't already do with Gibberish already.
+wires is an experiment to test if a reactive style of programming is useful for live coding situations. [Gibberish](https://github.com/charlieroberts/Gibberish) does a great job by itself, and wires doesn't really provide one with anything that you can't already do with Gibberish already.
 
 ### signal properties
 
