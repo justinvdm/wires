@@ -1,10 +1,10 @@
 {
   "name": "wires-js",
   "version": "0.0.0",
-  "description": "gibberish-based sound making for the browser",
+  "description": "Gibberish wrapped to work in a reactive way",
   "repository": {
     "type": "git",
-    "url": "git://github.com/justinvdm/wires-js.git"
+    "url": "git://github.com/justinvdm/wires.git"
   },
   "main": "wires.js",
   "scripts": {
@@ -12,6 +12,11 @@
   },
   "author": "justinvdm",
   "license": "MIT",
+  "dependencies": {
+    "sig-js": "~0.1.1",
+    "drainpipe": "^0.1.0",
+    "gibberish-dsp": "2.3.0"
+  },
   "devDependencies": {
     "chai": "^1.9.1",
     "gulp": "^3.8.7",
