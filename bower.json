@@ -20,6 +20,6 @@
   "dependencies": {
     "sig-js": "~0.1.1",
     "drainpipe": "^0.1.0",
-    "gibberish-dsp": "git@github.com:charlieroberts/Gibberish.git"
+    "gibberish-dsp": "https://github.com/charlieroberts/Gibberish.git"
   }
 }
