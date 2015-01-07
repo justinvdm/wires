@@ -1,7 +1,7 @@
 {
   "name": "wires-js",
   "author": "justinvdm",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Gibberish wrapped to work in a reactive way",
   "keywords": [
     "music",
