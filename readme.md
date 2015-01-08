@@ -118,7 +118,7 @@ stop(u, b)
 
 ### sound garbage collection
 
-Something I struggled to find in Gibberish was a way of automatically freeing ugens that are no longer producing sound.Often, manually disconnecting ugens works, but there are cases where this is less doable. Gibberish's `polyInit` is one way of handling this, though I wasn't able to find a solution using it for the problem I was running into. The case I ran into was when trying to output samples, since it isn't easy to manually disconnect each sample once it is done playing. Eventually, one ends up with too many live ugens, and artefacts like 'chopping' start to occur.
+Something I struggled to find in Gibberish was a way of automatically freeing ugens that are no longer producing sound. Often, manually disconnecting ugens works, but there are cases where this is less doable. Gibberish's `polyInit` is one way of handling this, though I wasn't able to find a solution using it for the problem I was running into. The case I ran into was when trying to output samples, since it isn't easy to manually disconnect each sample once it is done playing. Eventually, one ends up with too many live ugens, and artifacts like 'chopping' start to occur.
 
 To get around this, wires maintains a list of the current live ugens. At regular intervals (every `2000` milliseconds by default), the list is checked to see whether its length exceeds a configured maximum (`128` by default). If it does, the list is shortened to meet the configured maximum by taking off the oldest running ugens and disconnecting them.
 
