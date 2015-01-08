@@ -23,6 +23,19 @@ var src = [
 ]
 
 
+var testSrc = [
+    'bower_components/sig-js/sig.js',
+    'bower_components/drainpipe/drainpipe.js',
+    'bower_components/gibberish-dsp/build/gibberish.js'
+  ]
+  .concat(src)
+  .concat([
+    'tests/init.js',
+    'tests/testUtils.js',
+    'tests/**/*.test.js'
+ ])
+
+
 gulp.task('build', function () {
   return gulp.src(src)
     .pipe(concat('wires.js'))
@@ -56,21 +69,28 @@ gulp.task('build', function () {
 
 gulp.task('test', function() {
   return gulp
-    .src([
-      'bower_components/sig-js/sig.js',
-      'bower_components/drainpipe/drainpipe.js',
-      'bower_components/gibberish-dsp/build/gibberish.js'
-    ]
-    .concat(src)
-    .concat([
-      'tests/init.js',
-      'tests/testUtils.js',
-      'tests/**/*.test.js'
-    ]))
+    .src(testSrc)
     .pipe(karma({
       action: 'run',
       frameworks: ['mocha', 'chai'],
       browsers: ['Chrome']
+    }))
+})
+
+
+gulp.task('ci', function() {
+  return gulp
+    .src(testSrc)
+    .pipe(karma({
+      action: 'run',
+      frameworks: ['mocha', 'chai'],
+      browsers: ['ChromeNoSandbox'],
+      customLaunchers: {
+        ChromeNoSandbox: {
+          base: 'Chrome',
+          flags: ['--no-sandbox']
+        }
+      }
     }))
 })
 
