@@ -408,7 +408,7 @@ wires.ugens.make = function() {
   var any = sig.any,
       all = sig.all,
       put = sig.put,
-      then = sig.then,
+      each = sig.each,
       isSig = sig.isSig,
       once = sig.once,
       val = sig.val,
@@ -428,12 +428,12 @@ wires.ugens.make = function() {
     vv(params)
       (all)
       (once)
-      (then, enter)
+      (each, enter)
       (redir, out)
 
     vv(params)
       (any)
-      (then, spread, update)
+      (each, spread, update)
       (redir, out)
 
     return out
@@ -602,7 +602,7 @@ wires.stop = function() {
 wires.rout = function() {
   var ensure = sig.ensure,
       redir = sig.redir,
-      then = sig.then
+      each = sig.each
 
   var out = wires.out,
       stop = wires.stop
@@ -613,7 +613,7 @@ wires.rout = function() {
 
     vv(bus || wires.master)
       (stop)
-      (then, function() {
+      (each, function() {
         vv(out(ugen, bus))
           (redir, s)
       })
@@ -650,8 +650,8 @@ wires.sampler = function() {
   var w = wires
 
   var spread = sig.spread,
-      then = sig.then,
-      reset = sig.reset
+      each = sig.each,
+      end = sig.end
 
   var slice = Array.prototype.slice
 
@@ -661,7 +661,7 @@ wires.sampler = function() {
 
     // make a sample immediately to cache the file
     var s = make()
-    then(s, function() { reset(s) })
+    each(s, function() { end(s) })
 
     return make
 

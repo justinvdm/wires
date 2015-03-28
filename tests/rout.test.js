@@ -1,6 +1,6 @@
 describe("wires.rout", function() {
   var all = sig.all,
-      then = sig.then,
+      each = sig.each,
       spread = sig.spread
 
   var rout = w.rout,
@@ -14,7 +14,7 @@ describe("wires.rout", function() {
   it("should connect the ugen to the given bus", function(done) {
     vv([sine(), bus()])
       (all)
-      (then, spread, function(ugen, bus) {
+      (each, spread, function(ugen, bus) {
         rout(ugen, bus)
         bus.inputs.should.have.length(1)
         bus.inputs[0].value.should.equal(ugen)
@@ -25,7 +25,7 @@ describe("wires.rout", function() {
   it("should disconnect all other ugens connected to the bus", function(done) {
     vv([sine(), sine(), sine(), bus()])
       (all)
-      (then, spread, function(ugen1, ugen2, ugen3, bus) {
+      (each, spread, function(ugen1, ugen2, ugen3, bus) {
         out(ugen1, bus)
         out(ugen2, bus)
         bus.inputs.should.have.length(2)
@@ -42,7 +42,7 @@ describe("wires.rout", function() {
 
   it("should use the master bus as the default bus", function(done) {
     vv(sine())
-      (then, function(ugen) {
+      (each, function(ugen) {
         rout(ugen)
         master.inputs.should.have.length(1)
         master.inputs[0].value.should.equal(ugen)

@@ -1,9 +1,8 @@
 wires.testUtils = function() {
   var all = sig.all,
-      then = sig.then,
-      reset = sig.reset,
-      except = sig.except,
-      setup = sig.setup,
+      each = sig.each,
+      kill = sig.end,
+      except = sig.catch,
       teardown = sig.teardown,
       put = sig.put
 
@@ -15,11 +14,7 @@ wires.testUtils = function() {
 
   timer.at = function(d, ms, fn) {
     var s = sig()
-    var id
-
-    setup(s, function() {
-      id = setTimeout(fire, ms)
-    })
+    var id = setTimeout(fire, ms)
 
     teardown(s, function() {
       clearTimeout(id)
@@ -38,11 +33,11 @@ wires.testUtils = function() {
   timer.end = function(d, done) {
     vv(d.runs)
       (all)
-      (then, function() { end() })
+      (each, function() { end() })
       (except, end)
 
     function end(e) {
-      d.runs.forEach(reset)
+      d.runs.forEach(kill)
       if (e) done(e)
       else done()
     }

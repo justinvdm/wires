@@ -4,7 +4,7 @@ wires.ugens.make = function() {
   var any = sig.any,
       all = sig.all,
       put = sig.put,
-      then = sig.then,
+      each = sig.each,
       isSig = sig.isSig,
       once = sig.once,
       val = sig.val,
@@ -24,12 +24,12 @@ wires.ugens.make = function() {
     vv(params)
       (all)
       (once)
-      (then, enter)
+      (each, enter)
       (redir, out)
 
     vv(params)
       (any)
-      (then, spread, update)
+      (each, spread, update)
       (redir, out)
 
     return out

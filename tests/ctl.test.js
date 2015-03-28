@@ -1,6 +1,6 @@
 describe("wires.ctl", function() {
   var val = sig.val,
-      then = sig.then,
+      each = sig.each,
       put = sig.put
 
   var ctl = w.ctl,
@@ -10,7 +10,7 @@ describe("wires.ctl", function() {
     vv({frequency: 440})
       (sine)
       (ctl, {frequency: 220})
-      (then, function(ugen) {
+      (each, function(ugen) {
         assert.equal(ugen.frequency, 220)
         done()
       })
@@ -21,7 +21,7 @@ describe("wires.ctl", function() {
 
     vv({frequency: 440})
       (sine)
-      (then, function(ugen) {
+      (each, function(ugen) {
         ctl(ugen, params)
         assert.equal(ugen.frequency, 220)
         put(params, {frequency: 110})

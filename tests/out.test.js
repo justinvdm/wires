@@ -1,6 +1,6 @@
 describe("wires.out", function() {
   var all = sig.all,
-      then = sig.then,
+      each = sig.each,
       spread = sig.spread
 
   var out = w.out,
@@ -13,7 +13,7 @@ describe("wires.out", function() {
   it("should connect the ugen to the given bus", function(done) {
     vv([sine(), bus()])
       (all)
-      (then, spread, function(ugen, bus) {
+      (each, spread, function(ugen, bus) {
         out(ugen, bus)
         bus.inputs.should.have.length(1)
         bus.inputs[0].value.should.equal(ugen)
@@ -23,7 +23,7 @@ describe("wires.out", function() {
 
   it("should use the master bus as the default bus", function(done) {
     vv(sine())
-      (then, function(ugen) {
+      (each, function(ugen) {
         out(ugen)
         master.inputs.should.have.length(1)
         master.inputs[0].value.should.equal(ugen)
@@ -46,12 +46,12 @@ describe("wires.out", function() {
         hooks: {connect: hook}
       })
       (make, [])
-      (then, function(ugen) {
+      (each, function(ugen) {
         results.should.be.empty
         return ugen
       })
       (out, bus())
-      (then, function(ugen) {
+      (each, function(ugen) {
         results.should.deep.equal([ugen])
       })
   })

@@ -1,7 +1,7 @@
 wires.rout = function() {
   var ensure = sig.ensure,
       redir = sig.redir,
-      then = sig.then
+      each = sig.each
 
   var out = wires.out,
       stop = wires.stop
@@ -12,7 +12,7 @@ wires.rout = function() {
 
     vv(bus || wires.master)
       (stop)
-      (then, function() {
+      (each, function() {
         vv(out(ugen, bus))
           (redir, s)
       })

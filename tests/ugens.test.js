@@ -1,8 +1,8 @@
 describe("wires.ugens", function() {
   var put = sig.put,
       map = sig.map,
-      then = sig.then,
-      reset = sig.reset
+      each = sig.each,
+      end = sig.end
 
   var ugens = w.ugens,
       make = ugens.make,
@@ -25,7 +25,7 @@ describe("wires.ugens", function() {
   it("should be sticky", function(done) {
     var ugen = sine(220)
 
-    then(ugen, function(gibUgen) {
+    each(ugen, function(gibUgen) {
       capture(ugen).should.deep.equal([gibUgen])
       capture(ugen).should.deep.equal([gibUgen])
       done()
@@ -46,7 +46,7 @@ describe("wires.ugens", function() {
         }
       })
       (make, [])
-      (then, function(ugen) {
+      (each, function(ugen) {
         ugen.frequency.should.equal(23)
         ugen.amp.should.equal(32)
       })
@@ -70,7 +70,7 @@ describe("wires.ugens", function() {
   describe("ugens with named params", function() { 
     it("should support positional parameter passing", function(done) {
       vv(sine(440, 2))
-        (then, function(ugen) {
+        (each, function(ugen) {
           ugen.amp.should.equal(2)
           ugen.frequency.should.equal(440)
           done()
@@ -82,7 +82,7 @@ describe("wires.ugens", function() {
           frequency: 440,
           amp: 2
         }))
-        (then, function(ugen) {
+        (each, function(ugen) {
           ugen.amp.should.equal(2)
           ugen.frequency.should.equal(440)
           done()
@@ -91,7 +91,7 @@ describe("wires.ugens", function() {
 
     it("should support both named and positional parameter passing", function(done) {
       vv(sine(440, {amp: 2}))
-        (then, function(ugen) {
+        (each, function(ugen) {
           ugen.amp.should.equal(2)
           ugen.frequency.should.equal(440)
           done()
@@ -104,7 +104,7 @@ describe("wires.ugens", function() {
       var ugen
 
       vv(sine(freq, amp))
-        (then, function(newUgen) {
+        (each, function(newUgen) {
           ugen = newUgen
         })
 
@@ -123,11 +123,11 @@ describe("wires.ugens", function() {
       put(amp, 3)
       ugen.amp.should.equal(3)
 
-      reset(freq)
+      end(freq)
       put(freq, 110)
       ugen.frequency.should.equal(220)
 
-      reset(amp)
+      end(amp)
       put(amp, 4)
       ugen.amp.should.equal(3)
     })
@@ -137,7 +137,7 @@ describe("wires.ugens", function() {
   describe("ugens with unnamed params", function() {
     it("should apply the same params to the ugen", function(done) {
       vv(add(2, 3))
-        (then, function(ugen) {
+        (each, function(ugen) {
           ugen[0].should.equal(2)
           ugen[1].should.equal(3)
           done()
@@ -150,7 +150,7 @@ describe("wires.ugens", function() {
       var ugen
 
       vv(add(a, b))
-        (then, function(newUgen) {
+        (each, function(newUgen) {
           ugen = newUgen
         })
 
@@ -169,11 +169,11 @@ describe("wires.ugens", function() {
       put(b, 8)
       ugen[1].should.equal(8)
 
-      reset(a)
+      end(a)
       put(a, 6)
       ugen[0].should.equal(5)
 
-      reset(b)
+      end(b)
       put(b, 4)
       ugen[1].should.equal(8)
     })

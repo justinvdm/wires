@@ -2,8 +2,8 @@ wires.sampler = function() {
   var w = wires
 
   var spread = sig.spread,
-      then = sig.then,
-      reset = sig.reset
+      each = sig.each,
+      end = sig.end
 
   var slice = Array.prototype.slice
 
@@ -13,7 +13,7 @@ wires.sampler = function() {
 
     // make a sample immediately to cache the file
     var s = make()
-    then(s, function() { reset(s) })
+    each(s, function() { end(s) })
 
     return make
 
