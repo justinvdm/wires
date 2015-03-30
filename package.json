@@ -17,11 +17,6 @@
     "url": "git://github.com/justinvdm/wires.git"
   },
   "license": "MIT",
-  "dependencies": {
-    "sig-js": "~0.3",
-    "drainpipe": "^0.1.0",
-    "gibberish-dsp": "2.3.0"
-  },
   "devDependencies": {
     "chai": "^1.9.1",
     "gulp": "^3.8.7",
