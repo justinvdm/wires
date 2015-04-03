@@ -4,7 +4,19 @@ wires.testUtils = function() {
       kill = sig.end,
       except = sig.catch,
       teardown = sig.teardown,
-      put = sig.put
+      put = sig.put,
+      fin = sig.done
+
+
+  function first(s) {
+    var result
+
+    vv(s)
+      (each, function(v) { result = v })
+      (fin)
+
+    return result
+  }
 
 
   function timer() {
@@ -35,6 +47,7 @@ wires.testUtils = function() {
       (all)
       (each, function() { end() })
       (except, end)
+      (fin)
 
     function end(e) {
       d.runs.forEach(kill)
@@ -47,6 +60,7 @@ wires.testUtils = function() {
 
 
   return {
+    first: first,
     timer: timer
   }
 }()

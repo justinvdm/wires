@@ -1,7 +1,8 @@
 describe("wires.out", function() {
   var all = sig.all,
       each = sig.each,
-      spread = sig.spread
+      spread = sig.spread,
+      fin = sig.done
 
   var out = w.out,
       bus = w.bus,
@@ -18,7 +19,8 @@ describe("wires.out", function() {
         bus.inputs.should.have.length(1)
         bus.inputs[0].value.should.equal(ugen)
         done()
-     })
+      })
+      (fin)
   })
 
   it("should use the master bus as the default bus", function(done) {
@@ -29,7 +31,8 @@ describe("wires.out", function() {
         master.inputs[0].value.should.equal(ugen)
         stop(ugen)
         done()
-     })
+      })
+      (fin)
   })
 
   it("should support a ugen connect hook", function() {
@@ -54,5 +57,6 @@ describe("wires.out", function() {
       (each, function(ugen) {
         results.should.deep.equal([ugen])
       })
+      (fin)
   })
 })

@@ -6,27 +6,27 @@ describe("wires.ctl", function() {
   var ctl = w.ctl,
       sine = w.sine
 
-  it("should change the params of the ugen", function(done) {
-    vv({frequency: 440})
-      (sine)
-      (ctl, {frequency: 220})
-      (each, function(ugen) {
-        assert.equal(ugen.frequency, 220)
-        done()
-      })
+  var testUtils = w.testUtils,
+      first = testUtils.first
+
+  it("should change the params of the ugen", function() {
+    var s = sine({frequency: 440})
+    var ugen = first(s)
+    assert.equal(ugen.frequency, 440)
+    ctl(s, {frequency: 220})
+    assert.equal(ugen.frequency, 220)
   })
 
-  it("should allow the params to be a signal", function(done) {
+  it("should allow the params to be a signal", function() {
+    var s = sine({frequency: 440})
+    var ugen = first(s)
     var params = val({frequency: 220})
 
-    vv({frequency: 440})
-      (sine)
-      (each, function(ugen) {
-        ctl(ugen, params)
-        assert.equal(ugen.frequency, 220)
-        put(params, {frequency: 110})
-        assert.equal(ugen.frequency, 110)
-        done()
-      })
+    assert.equal(ugen.frequency, 440)
+    ctl(ugen, params)
+    assert.equal(ugen.frequency, 220)
+
+    put(params, {frequency: 110})
+    assert.equal(ugen.frequency, 110)
   })
 })

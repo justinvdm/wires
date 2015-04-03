@@ -4,7 +4,7 @@ describe("wires.sampler", function() {
   var sampler = w.sampler,
       sampleOrig = w.sample
 
-  var sampleCalls = []
+  var sampleCalls
 
   function sampleFake() {
     sampleCalls.push(slice.call(arguments))

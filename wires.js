@@ -651,7 +651,8 @@ wires.sampler = function() {
 
   var spread = sig.spread,
       each = sig.each,
-      end = sig.end
+      end = sig.end,
+      fin = sig.done
 
   var slice = Array.prototype.slice
 
@@ -661,7 +662,10 @@ wires.sampler = function() {
 
     // make a sample immediately to cache the file
     var s = make()
-    each(s, function() { end(s) })
+
+    vv(s)
+      (each, function(s) { end(s) })
+      (fin)
 
     return make
 

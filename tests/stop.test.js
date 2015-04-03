@@ -1,7 +1,8 @@
 describe("wires.stop", function() {
   var all = sig.all,
       each = sig.each,
-      spread = sig.spread
+      spread = sig.spread,
+      fin = sig.done
 
   var out = w.out,
       bus = w.bus,
@@ -31,6 +32,7 @@ describe("wires.stop", function() {
 
         done()
       })
+      (fin)
   })
 
   it("should disconnect all ugens from a given bus", function(done) {
@@ -48,5 +50,6 @@ describe("wires.stop", function() {
 
         done()
       })
+      (fin)
   })
 })

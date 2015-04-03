@@ -1,7 +1,8 @@
 describe("wires.rout", function() {
   var all = sig.all,
       each = sig.each,
-      spread = sig.spread
+      spread = sig.spread,
+      fin = sig.done
 
   var rout = w.rout,
       out = w.out,
@@ -19,7 +20,8 @@ describe("wires.rout", function() {
         bus.inputs.should.have.length(1)
         bus.inputs[0].value.should.equal(ugen)
         done()
-     })
+      })
+      (fin)
   })
 
   it("should disconnect all other ugens connected to the bus", function(done) {
@@ -37,7 +39,8 @@ describe("wires.rout", function() {
         bus.inputs[0].value.should.equal(ugen3)
 
         done()
-     })
+      })
+      (fin)
   })
 
   it("should use the master bus as the default bus", function(done) {
@@ -48,6 +51,7 @@ describe("wires.rout", function() {
         master.inputs[0].value.should.equal(ugen)
         stop(ugen)
         done()
-     })
+      })
+      (fin)
   })
 })

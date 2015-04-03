@@ -2,7 +2,8 @@ describe("wires.ugens", function() {
   var put = sig.put,
       map = sig.map,
       each = sig.each,
-      end = sig.end
+      end = sig.end,
+      fin = sig.done
 
   var ugens = w.ugens,
       make = ugens.make,
@@ -11,29 +12,17 @@ describe("wires.ugens", function() {
   var sine = w.sine,
       add = w.add
 
+  var testUtils = w.testUtils,
+      first = testUtils.first
 
-  function capture(s) {
-    var values = []
-
-    map(s, function(x) {
-      values.push(x)
-    })
-
-    return values
-  }
-
-  it("should be sticky", function(done) {
+  it("should be sticky", function() {
     var ugen = sine(220)
-
-    each(ugen, function(gibUgen) {
-      capture(ugen).should.deep.equal([gibUgen])
-      capture(ugen).should.deep.equal([gibUgen])
-      done()
-    })
+    var gibUgen = first(ugen)
+    gibUgen.should.equal(first(ugen))
   })
 
   it("should support defaults params in metadata", function() {
-    vv({
+    var ugen = vv({
         ctor: Gibberish.Sine,
         exportName: 'sine',
         paramNames: [
@@ -46,10 +35,11 @@ describe("wires.ugens", function() {
         }
       })
       (make, [])
-      (each, function(ugen) {
-        ugen.frequency.should.equal(23)
-        ugen.amp.should.equal(32)
-      })
+      (first)
+      ()
+
+    ugen.frequency.should.equal(23)
+    ugen.amp.should.equal(32)
   })
 
   it("should support metadata retrieval", function() {
@@ -68,34 +58,26 @@ describe("wires.ugens", function() {
 
 
   describe("ugens with named params", function() { 
-    it("should support positional parameter passing", function(done) {
-      vv(sine(440, 2))
-        (each, function(ugen) {
-          ugen.amp.should.equal(2)
-          ugen.frequency.should.equal(440)
-          done()
-        })
+    it("should support positional parameter passing", function() {
+      var ugen = first(sine(440, 2))
+      ugen.amp.should.equal(2)
+      ugen.frequency.should.equal(440)
     })
 
-    it("should support positional parameter pasing", function(done) {
-      vv(sine({
-          frequency: 440,
-          amp: 2
-        }))
-        (each, function(ugen) {
-          ugen.amp.should.equal(2)
-          ugen.frequency.should.equal(440)
-          done()
-        })
+    it("should support positional parameter pasing", function() {
+      var ugen = first(sine({
+        frequency: 440,
+        amp: 2
+      }))
+
+      ugen.amp.should.equal(2)
+      ugen.frequency.should.equal(440)
     })
 
-    it("should support both named and positional parameter passing", function(done) {
-      vv(sine(440, {amp: 2}))
-        (each, function(ugen) {
-          ugen.amp.should.equal(2)
-          ugen.frequency.should.equal(440)
-          done()
-        })
+    it("should support both named and positional parameter passing", function() {
+      var ugen = first(sine(440, {amp: 2}))
+      ugen.amp.should.equal(2)
+      ugen.frequency.should.equal(440)
     })
 
     it("should support signals as parameters", function() {
@@ -107,6 +89,7 @@ describe("wires.ugens", function() {
         (each, function(newUgen) {
           ugen = newUgen
         })
+        (fin)
 
       expect(ugen).to.be.undefined
 
@@ -135,13 +118,10 @@ describe("wires.ugens", function() {
 
 
   describe("ugens with unnamed params", function() {
-    it("should apply the same params to the ugen", function(done) {
-      vv(add(2, 3))
-        (each, function(ugen) {
-          ugen[0].should.equal(2)
-          ugen[1].should.equal(3)
-          done()
-        })
+    it("should apply the same params to the ugen", function() {
+      var ugen = first(add(2, 3))
+      ugen[0].should.equal(2)
+      ugen[1].should.equal(3)
     })
 
     it("should support signals as parameters", function() {
@@ -153,6 +133,7 @@ describe("wires.ugens", function() {
         (each, function(newUgen) {
           ugen = newUgen
         })
+        (fin)
 
       expect(ugen).to.be.undefined
 
