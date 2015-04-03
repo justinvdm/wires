@@ -8,7 +8,7 @@ describe("wires.sampler", function() {
 
   function sampleFake() {
     sampleCalls.push(slice.call(arguments))
-    return sig()
+    return sig([23])
   }
 
   beforeEach(function() {

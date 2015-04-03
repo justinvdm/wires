@@ -16,7 +16,7 @@ wires.sampler = function() {
     var s = make()
 
     vv(s)
-      (each, function(s) { end(s) })
+      (each, function() { end(s) })
       (fin)
 
     return make
